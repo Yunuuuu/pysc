@@ -8,10 +8,11 @@ pysc_tidy <- function(x, ...) {
 }
 
 #' @export
-pysc_tidy.sccoda.util.result_classes.CAResult <- function(x, ...) {
-    intercept <- reticulate::py_to_r(x$intercept_df)
+pysc_tidy.sccoda.util.result_classes.CAResult <- function(x, fdr = 0.05, ...) {
+    lst <- reticulate::py_to_r(x$summary_prepare(est_fdr = fdr, ...))
+    intercept <- lst[[1L]]
     data.table::setDT(intercept, keep.rownames = "terms")
-    effect <- reticulate::py_to_r(x$effect_df)
+    effect <- lst[[2L]]
     data.table::setDT(effect)
     data.table::setnames(intercept, function(x) paste0("Intercept ", x))
     data.table::setnames(effect, function(x) paste0("Effect ", x))
