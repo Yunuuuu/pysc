@@ -61,10 +61,7 @@ sccoda_data_long_data_frame <- function(data, sample, covariates, celltype, coun
     assert_string(celltype)
     assert_string(counts, null_ok = TRUE)
     for (covariate in covariates) {
-        assert_data_frame_hierarchy(data,
-            sample, covariate,
-            child_field = covariate
-        )
+        assert_data_frame_hierarchy(data, covariate, sample)
     }
     data <- data.table::as.data.table(data)
     data <- data[, .SD, .SDcols = c(sample, celltype, covariates, counts)] # nolint
@@ -86,7 +83,7 @@ sccoda_data_long_data_frame <- function(data, sample, covariates, celltype, coun
     lhs <- Reduce(function(x, y) {
         rlang::expr(!!x + !!y)
     }, rlang::syms(c(sample, covariates)))
-    rhs <- rlang::syms(celltype)
+    rhs <- rlang::sym(celltype)
     data <- data.table::dcast(data,
         rlang::new_formula(lhs, rhs),
         value.var = ".__counts__.",
@@ -219,7 +216,7 @@ sccoda_generate_data <- function(type = "case_control", ...) {
 }
 
 #' Import datasets from scCODA
-#' 
+#'
 #' @param name The name of dataset to extract.
 #' @export
 sccoda_datasets <- function(name) {

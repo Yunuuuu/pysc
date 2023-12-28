@@ -1,3 +1,26 @@
+assert_data_frame_columns <- function(x, columns, ..., args = rlang::caller_arg(x), call = rlang::caller_env()) {
+    missing_cols <- setdiff(columns, names(x))
+    if (length(missing_cols)) {
+        args <- style_arg(args)
+        if (length(args) == 1L) {
+            msg <- args
+        } else {
+            msg <- sprintf("One of %s", oxford_comma(args, final = "or"))
+        }
+        rlang::abort(
+            c(
+                sprintf(
+                    "%s must contain columns: %s", msg,
+                    oxford_comma(columns)
+                ),
+                x = sprintf("missing columns: %s", oxford_comma(missing_cols))
+            ),
+            ...,
+            call = call
+        )
+    }
+}
+
 # Other assert function ---------------------------------
 assert_data_frame_hierarchy <- function(x, parent_field, child_field = NULL, arg_children = rlang::caller_arg(child_field), ..., arg = rlang::caller_arg(x), call = rlang::caller_env()) {
     id_parent <- style_code(sprintf("%s[[\"%s\"]]", arg, parent_field))
