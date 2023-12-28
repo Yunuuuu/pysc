@@ -2,14 +2,19 @@
 % Please edit documentation in R/tidy.R
 \name{pysc_tidy}
 \alias{pysc_tidy}
+\alias{pysc_tidy.sccoda.util.result_classes.CAResult}
 \title{Turn an object into a data.table}
 \usage{
 pysc_tidy(x, ...)
+
+\method{pysc_tidy}{sccoda.util.result_classes.CAResult}(x, fdr = 0.05, ...)
 }
 \arguments{
 \item{x}{A python object.}
 
 \item{...}{Additional arguments to tidying method.}
+
+\item{fdr}{Desired FDR value.}
 }
 \description{
 Turn an object into a data.table

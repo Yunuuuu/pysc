@@ -7,7 +7,9 @@ pysc_tidy <- function(x, ...) {
     UseMethod("pysc_tidy")
 }
 
+#' @param fdr Desired FDR value.
 #' @export
+#' @rdname pysc_tidy
 pysc_tidy.sccoda.util.result_classes.CAResult <- function(x, fdr = 0.05, ...) {
     lst <- reticulate::py_to_r(x$summary_prepare(est_fdr = fdr, ...))
     intercept <- lst[[1L]]
