@@ -9,8 +9,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
     cli,
+    data.table,
     reticulate,
     rlang (>= 1.1.0)
+Suggests: 
+    SummarizedExperiment
 ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
