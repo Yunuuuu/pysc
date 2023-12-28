@@ -128,13 +128,13 @@ sccoda <- function(data, formula, reference = "automatic", ...) {
 #' Categorical covariates are handled automatically, with the covariate value of
 #' the first sample being used as the reference category. To set a different
 #' level as the base category for a categorical covariate, use
-#' `C(<CovariateName>, Treatment(‘<ReferenceLevelName>’))`.
+#' `C(<CovariateName>, Treatment('<ReferenceLevelName>'))`.
 #' @param reference The `scCODA` model requires a cell type to be set as the
 #' reference category. However, choosing this cell type is often difficult. A
 #' good first choice is a referenece cell type that closely preserves the
 #' changes in relative abundance during the compositional analysis.
 #' @export
-sccoda_analysis <- function(data, formula, reference) {
+sccoda_analysis <- function(data, formula, reference = "automatic") {
     assert_s3_class(data, "anndata._core.anndata.AnnData")
     if (rlang::is_formula(formula)) {
         formula <- deparse(rlang::f_rhs(formula))

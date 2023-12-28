@@ -4,7 +4,7 @@
 \alias{sccoda_analysis}
 \title{Performing compositional analysis with scCODA.}
 \usage{
-sccoda_analysis(data, formula, reference)
+sccoda_analysis(data, formula, reference = "automatic")
 }
 \arguments{
 \item{data}{A Python \code{AnnData} object returned by \link{sccoda_data}.}
@@ -13,7 +13,7 @@ sccoda_analysis(data, formula, reference)
 Categorical covariates are handled automatically, with the covariate value of
 the first sample being used as the reference category. To set a different
 level as the base category for a categorical covariate, use
-\verb{C(<CovariateName>, Treatment(‘<ReferenceLevelName>’))}.}
+\verb{C(<CovariateName>, Treatment('<ReferenceLevelName>'))}.}
 
 \item{reference}{The \code{scCODA} model requires a cell type to be set as the
 reference category. However, choosing this cell type is often difficult. A
