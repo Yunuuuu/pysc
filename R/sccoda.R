@@ -163,7 +163,7 @@ sccoda_analysis <- function(data, formula, reference = "automatic") {
 #' @param num_leapfrog_steps HMC leapfrog steps (default 10).
 #' @param max_tree_depth Maximum tree depth (default 10).
 #' @param step_size Initial step size (default 0.01).
-#' @param verbose If true, a progress bar is printed during MCMC sampling
+#' @param verbose If true, a progress bar is printed during MCMC sampling.
 #' @export
 sccoda_sampling <- function(
     model, num_results = NULL, num_burnin = 5000L, num_adapt_steps = NULL,
@@ -218,6 +218,10 @@ sccoda_generate_data <- function(type = "case_control", ...) {
     pysccoda$util$data_generation[[nm]](...)
 }
 
+#' Import datasets from scCODA
+#' 
+#' @param name The name of dataset to extract.
+#' @export
 sccoda_datasets <- function(name) {
     pysccoda$datasets[[name]]()
 }

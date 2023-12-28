@@ -37,7 +37,7 @@ sampling; 10000 for "nuts" sampling.}
     \item{\code{num_leapfrog_steps}}{HMC leapfrog steps (default 10).}
     \item{\code{max_tree_depth}}{Maximum tree depth (default 10).}
     \item{\code{step_size}}{Initial step size (default 0.01).}
-    \item{\code{verbose}}{If true, a progress bar is printed during MCMC sampling}
+    \item{\code{verbose}}{If true, a progress bar is printed during MCMC sampling.}
   }}
 }
 \description{

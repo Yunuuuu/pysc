@@ -32,7 +32,7 @@ sampling; 10000 for "nuts" sampling.}
 
 \item{step_size}{Initial step size (default 0.01).}
 
-\item{verbose}{If true, a progress bar is printed during MCMC sampling}
+\item{verbose}{If true, a progress bar is printed during MCMC sampling.}
 
 \item{sampling}{There are three different MCMC sampling methods available for
 \code{scCODA}. Default: "hmc".

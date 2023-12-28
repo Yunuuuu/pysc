@@ -1,0 +1,63 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# pysc
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of `pysc` is to integrate Miscellaneous Python functions for Single
+Cell analysis.
+
+## Installation
+
+You can install the development version of `pysc` from [GitHub](https://github.com/) with:
+
+``` r
+if (!requireNamespace("pak")) {
+  install.packages("pak",
+    repos = sprintf(
+      "https://r-lib.github.io/p/pak/devel/%s/%s/%s",
+      .Platform$pkgType, R.Version()$os, R.Version()$arch
+    )
+  )
+}
+pak::pkg_install("Yunuuuu/pysc")
+```
+
+## Implemented Algorithm
+- `scCODA`: <https://github.com/theislab/scCODA>
+
+
+## Examples
+```{r setup}
+library(pysc)
+```
+
+## scCODA - Single-cell differential composition analysis
+
+This is a basic example which shows you how to solve a common problem:
+
+```{r scCODA}
+data <- reticulate::py_to_r(sccoda_datasets("haber"))
+data$Condition <- gsub("_[0-9]$", "", data$Mouse)
+data <- data[data$Condition %in% c("Control", "Salm")]
+data <- sccoda_data(
+  data, c("Mouse", "Condition"),
+  setdiff(names(data), c("Mouse", "Condition"))
+)
+sccoda_out <- sccoda(data, "Condition")
+pysc_tidy(sccoda_out)
+```
