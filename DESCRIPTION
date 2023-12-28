@@ -1,11 +1,16 @@
-Package: sccoda
-Title: What the Package Does (One Line, Title Case)
+Package: pysc
+Title: Miscellaneous Python functions for Single Cell analysis
 Version: 0.0.0.9000
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: Miscellaneous Python functions for Single Cell analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
+Imports: 
+    cli,
+    reticulate,
+    rlang (>= 1.1.0)
+ByteCompile: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
