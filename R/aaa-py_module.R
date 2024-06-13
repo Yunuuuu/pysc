@@ -8,9 +8,7 @@ module <- function(name, as = NULL, convert = FALSE, delay_load = TRUE) {
 }
 
 #' @export
-`$.py_module` <- function(x, i) {
-    x[[i]]
-}
+`$.py_module` <- function(x, i) x[[i]]
 
 #' @export
 `[[.py_module` <- function(x, i) {
@@ -21,6 +19,14 @@ module <- function(name, as = NULL, convert = FALSE, delay_load = TRUE) {
         delay_load = attr(x, "delay_load")
     )
     py_module[[i]]
+}
+
+#' @export
+`[.py_module` <- function(x, i) {
+    cli::cli_abort(c(
+        "No method `[` for {.cls py_module}",
+        i = "Do you mean `[[`?"
+    ))
 }
 
 #' @export
