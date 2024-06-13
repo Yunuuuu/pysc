@@ -9,11 +9,12 @@ condaenv(conda = NULL)
 \arguments{
 \item{conda}{Conda environment to be use. If \code{NULL}, will return current
 global conda environment, if \code{NA}, will remove the global conda environment
-settting. If a string, will set the global conda environment.}
+settting. If a character vector, will set the global conda environment.}
 }
 \description{
 All python related function will accept \code{conda} argument, if it's \code{NULL},
 then the global conda environment will be used, if it's \code{NA}, no conda
-environment will be used, otherwise it must be a string indicates the conda
-environment name.
+environment will be used, otherwise it must be a character non-empty string
+indicates the conda environment name. \code{condaenv} just provide the way to
+query or set the global conda environment.
 }

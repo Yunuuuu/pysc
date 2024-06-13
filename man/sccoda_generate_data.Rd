@@ -4,7 +4,7 @@
 \alias{sccoda_generate_data}
 \title{Synthetic data generation in scCODA}
 \usage{
-sccoda_generate_data(type = "case_control", ...)
+sccoda_generate_data(type = "case_control", ..., conda = NULL)
 }
 \arguments{
 \item{type}{A string from following items.
@@ -18,6 +18,9 @@ sum.
 }}
 
 \item{...}{Additional arguments to generate data.}
+
+\item{conda}{A character vector of preferred python environment names to
+search for and use. Details see \link{condaenv}.}
 }
 \description{
 Synthetic data generation in scCODA

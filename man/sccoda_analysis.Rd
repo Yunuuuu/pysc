@@ -4,7 +4,7 @@
 \alias{sccoda_analysis}
 \title{Performing compositional analysis with scCODA.}
 \usage{
-sccoda_analysis(data, formula, reference = "automatic")
+sccoda_analysis(data, formula, reference = "automatic", conda = NULL)
 }
 \arguments{
 \item{data}{A Python \code{AnnData} object returned by \link{sccoda_data}.}
@@ -19,6 +19,9 @@ level as the base category for a categorical covariate, use
 reference category. However, choosing this cell type is often difficult. A
 good first choice is a referenece cell type that closely preserves the
 changes in relative abundance during the compositional analysis.}
+
+\item{conda}{A character vector of preferred python environment names to
+search for and use. Details see \link{condaenv}.}
 }
 \description{
 Performing compositional analysis with scCODA.

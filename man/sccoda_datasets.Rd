@@ -4,10 +4,13 @@
 \alias{sccoda_datasets}
 \title{Import datasets from scCODA}
 \usage{
-sccoda_datasets(name)
+sccoda_datasets(name, conda = NULL)
 }
 \arguments{
 \item{name}{The name of dataset to extract.}
+
+\item{conda}{A character vector of preferred python environment names to
+search for and use. Details see \link{condaenv}.}
 }
 \description{
 Import datasets from scCODA

@@ -8,7 +8,15 @@
 \usage{
 sccoda_data(data, ...)
 
-\method{sccoda_data}{data.frame}(data, covariates, celltype, sample = NULL, counts = NULL, ...)
+\method{sccoda_data}{data.frame}(
+  data,
+  covariates,
+  celltype,
+  sample = NULL,
+  counts = NULL,
+  ...,
+  conda = NULL
+)
 
 \method{sccoda_data}{SummarizedExperiment}(
   data,
@@ -16,7 +24,8 @@ sccoda_data(data, ...)
   celltype = "label",
   sample = "Sample",
   counts = NULL,
-  ...
+  ...,
+  conda = NULL
 )
 }
 \arguments{
@@ -42,6 +51,9 @@ columns specified in \code{celltype} containing the count data for each cell typ
 
 \item{counts}{A string define the column of sample information, only used
 when \code{sample} is not \code{NULL}.}
+
+\item{conda}{A character vector of preferred python environment names to
+search for and use. Details see \link{condaenv}.}
 }
 \value{
 A Python \code{AnnData} object

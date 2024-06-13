@@ -17,6 +17,7 @@
 #' @param counts A string define the column of sample information, only used
 #' when `sample` is not `NULL`.
 #' @param ... Additional arguments passed to specific methods.
+#' @inheritParams sccoda
 #' @return A Python `AnnData` object
 #' @export
 sccoda_data <- function(data, ...) {
@@ -25,39 +26,41 @@ sccoda_data <- function(data, ...) {
 
 #' @rdname sccoda_data
 #' @export
-sccoda_data.data.frame <- function(data, covariates, celltype, sample = NULL, counts = NULL, ...) {
+sccoda_data.data.frame <- function(data, covariates, celltype, sample = NULL, counts = NULL, ..., conda = NULL) {
     assert_string(sample, null_ok = TRUE)
     if (is.null(sample)) {
         sccoda_data_wide_data_frame(
             data = data,
-            covariates = covariates, celltype = celltype
+            covariates = covariates, celltype = celltype,
+            conda = conda
         )
     } else {
         sccoda_data_long_data_frame(
             data = data, sample = sample, covariates = covariates,
-            celltype = celltype, counts = counts
+            celltype = celltype, counts = counts,
+            conda = conda
         )
     }
 }
 
 #' @rdname sccoda_data
 #' @export
-sccoda_data.SummarizedExperiment <- function(data, covariates, celltype = "label", sample = "Sample", counts = NULL, ...) {
+sccoda_data.SummarizedExperiment <- function(data, covariates, celltype = "label", sample = "Sample", counts = NULL, ..., conda = NULL) {
     assert_string(sample)
     data <- data.table::as.data.table(SummarizedExperiment::colData(data))
     sccoda_data_long_data_frame(
         data = data, sample = sample, covariates = covariates,
-        celltype = celltype, counts = counts
+        celltype = celltype, counts = counts, conda = conda
     )
 }
 
-sccoda_data_wide_data_frame <- function(data, covariates, celltype) {
+sccoda_data_wide_data_frame <- function(data, covariates, celltype, conda = NULL) {
     data <- data.table::as.data.table(data)
     data <- data[, .SD, .SDcols = c(celltype, covariates)] # nolint
-    sccoda_data_prepare_pandas(data, covariates)
+    sccoda_data_prepare_pandas(data, covariates, conda = conda)
 }
 
-sccoda_data_long_data_frame <- function(data, sample, covariates, celltype, counts = NULL) {
+sccoda_data_long_data_frame <- function(data, sample, covariates, celltype, counts = NULL, conda = NULL) {
     assert_string(celltype)
     assert_string(counts, null_ok = TRUE)
     for (covariate in covariates) {
@@ -89,14 +92,14 @@ sccoda_data_long_data_frame <- function(data, sample, covariates, celltype, coun
         value.var = ".__counts__.",
         fill = 0L
     )
-    sccoda_data_prepare_pandas(data, c(sample, covariates))
+    sccoda_data_prepare_pandas(data, c(sample, covariates), conda = conda)
 }
 
-sccoda_data_prepare_pandas <- function(data, covariates) {
+sccoda_data_prepare_pandas <- function(data, covariates, conda = NULL) {
     if (length(covariates) == 1L) {
         covariates <- list(covariates)
     }
-    pysccoda$util$cell_composition_data$from_pandas(
+    pysccoda(conda = conda)$util$cell_composition_data$from_pandas(
         df = data,
         covariate_columns = covariates
     )
@@ -112,9 +115,11 @@ sccoda_data_prepare_pandas <- function(data, covariates) {
 #'
 #' @inheritParams sccoda_analysis
 #' @inheritDotParams sccoda_sampling -model
+#' @param conda A character vector of preferred python environment names to
+#' search for and use. Details see [condaenv].
 #' @export
-sccoda <- function(data, formula, reference = "automatic", ...) {
-    model <- sccoda_analysis(data, formula, reference)
+sccoda <- function(data, formula, reference = "automatic", ..., conda = NULL) {
+    model <- sccoda_analysis(data, formula, reference, conda = conda)
     sccoda_sampling(model = model, ...)
 }
 
@@ -130,15 +135,18 @@ sccoda <- function(data, formula, reference = "automatic", ...) {
 #' reference category. However, choosing this cell type is often difficult. A
 #' good first choice is a referenece cell type that closely preserves the
 #' changes in relative abundance during the compositional analysis.
+#' @inheritParams sccoda_data
+#' @inheritParams sccoda
 #' @export
-sccoda_analysis <- function(data, formula, reference = "automatic") {
+sccoda_analysis <- function(data, formula, reference = "automatic",
+                            conda = NULL) {
     assert_s3_class(data, "anndata._core.anndata.AnnData")
     if (rlang::is_formula(formula)) {
         formula <- deparse(rlang::f_rhs(formula))
     } else if (!rlang::is_string(formula)) {
         cli::cli_abort("{.arg formula} must be a string or a {.cls formula}")
     }
-    pysccoda$util$comp_ana$CompositionalAnalysis(
+    pysccoda(conda)$util$comp_ana$CompositionalAnalysis(
         data = data,
         formula = formula,
         reference_cell_type = reference
@@ -198,10 +206,11 @@ sccoda_sampling <- function(
 #'  - `counts`: Calculates a count vector from a given first entry, length and
 #'    sum.
 #' @param ... Additional arguments to generate data.
+#' @inheritParams sccoda
 #' @seealso
 #' <https://sccoda.readthedocs.io/en/latest/api.html>
 #' @export
-sccoda_generate_data <- function(type = "case_control", ...) {
+sccoda_generate_data <- function(type = "case_control", ..., conda = NULL) {
     type <- match.arg(
         type,
         c("case_control", "effect_matrix", "bw", "counts")
@@ -212,15 +221,19 @@ sccoda_generate_data <- function(type = "case_control", ...) {
         counts = "counts_from_first",
         effect_matrix = "sparse_effect_matrix"
     )
-    pysccoda$util$data_generation[[nm]](...)
+    pysccoda(conda)$util$data_generation[[nm]](...)
 }
 
 #' Import datasets from scCODA
 #'
 #' @param name The name of dataset to extract.
+#' @inheritParams sccoda
 #' @export
-sccoda_datasets <- function(name) {
-    pysccoda$datasets[[name]]()
+sccoda_datasets <- function(name, conda = NULL) {
+    pysccoda(conda)$datasets[[name]]()
 }
 
-pysccoda <- module("sccoda")
+pysccoda <- function(conda) {
+    check_condaenv(conda)
+    import2("sccoda", envir = conda)
+}

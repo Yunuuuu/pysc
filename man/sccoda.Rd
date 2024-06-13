@@ -4,7 +4,7 @@
 \alias{sccoda}
 \title{Bayesian model for compositional single-cell data analysis}
 \usage{
-sccoda(data, formula, reference = "automatic", ...)
+sccoda(data, formula, reference = "automatic", ..., conda = NULL)
 }
 \arguments{
 \item{data}{A Python \code{AnnData} object returned by \link{sccoda_data}.}
@@ -39,6 +39,9 @@ sampling; 10000 for "nuts" sampling.}
     \item{\code{step_size}}{Initial step size (default 0.01).}
     \item{\code{verbose}}{If true, a progress bar is printed during MCMC sampling.}
   }}
+
+\item{conda}{A character vector of preferred python environment names to
+search for and use. Details see \link{condaenv}.}
 }
 \description{
 scCODA is a toolbox for statistical models to analyze changes in
