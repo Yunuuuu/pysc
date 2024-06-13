@@ -7,10 +7,12 @@ module <- function(name, as = NULL, convert = FALSE, delay_load = TRUE) {
     )
 }
 
+#' @export
 `$.py_module` <- function(x, i) {
     x[[i]]
 }
 
+#' @export
 `[[.py_module` <- function(x, i) {
     py_module <- import(
         module = x,
@@ -53,8 +55,7 @@ assert_module <- function(name, call = rlang::caller_env()) {
 module_available <- local({
     cache <- new.env()
     function(name) {
-        out <- cache[[name]]
-        if (is.null(out)) {
+        if (is.null(out <- .subset2(cache, name))) {
             out <- reticulate::py_module_available(name)
             cache[[name]] <<- out
         }
